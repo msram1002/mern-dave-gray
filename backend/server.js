@@ -2,9 +2,17 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 3500;
+const { logger } = require('./middleware/logger')
+const errorHandler = require('./middleware/errorHandler');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
 
+app.use(logger);
 // Built in middleware - express.static to retrieve the static files from public folder
+app.use(cors(corsOptions));
 app.use(express.json())
+app.use(cookieParser());
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
@@ -22,4 +30,5 @@ app.all('/{*any}', (req, res) => {
   }
 });
 
+app.use(errorHandler);
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
