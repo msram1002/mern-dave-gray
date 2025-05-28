@@ -22,6 +22,8 @@ app.use(cookieParser());
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/root'));
+app.use('/users', require('./routes/userRoutes'));
+app.use('/notes', require('./routes/noteRoutes'));
 
 // Express v5  - The wildcard * must have a name, matching the behavior of parameters :, use /*splat instead of /*
 app.all('/{*any}', (req, res) => {
